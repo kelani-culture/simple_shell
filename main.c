@@ -17,7 +17,7 @@
 
 int main(int argc, char *argv[])
 {
-	char command[BUF_SIZE], *args[2];
+	char command[BUF_SIZE], *args[BUF_SIZE];
 	ssize_t read_size;
 	pid_t pid;
 	int status;
@@ -45,8 +45,7 @@ int main(int argc, char *argv[])
 		else if (pid == 0)
 		{
 			/* child process */
-			args[0] = command;
-			args[1] = NULL;
+			command_args(command, args, BUF_SIZE);
 			if (execve(args[0], args, environ) == -1)	
 				handle_error("", argv[0]);
 		}
