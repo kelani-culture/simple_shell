@@ -36,6 +36,9 @@ int main(int argc, char *argv[])
 			break;
 		}
 		command[read_size - 1] = '\0'; /* Remove trailing newline */
+		if (_strlen(command) == 0)
+			continue;  /* Empty command continue to iteration */
+
 		pid = fork();
 		if (pid == -1)
 			handle_error("Error forking. ", argv[0]);
