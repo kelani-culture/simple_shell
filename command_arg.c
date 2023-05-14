@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <string.h>
 /**
- * tokenize_command - Tokenizes a command into arguments.
+ * command_args - Tokenizes a command into arguments.
  * @command: The command to tokenize.
  * @args: The array to store the arguments.
  * @max_args: The maximum number of arguments.

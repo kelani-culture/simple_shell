@@ -3,6 +3,7 @@
 /**
  * _strlen - countlength of string
  * @str: string to count
+ * Return: lenght of char
  */
 
 
