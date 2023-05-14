@@ -20,5 +20,5 @@ void handle_error(const char *error_msg, const char *program_name)
 
 	snprintf(error_buf, BUF_SIZE, "%s%s", program_name, error_msg);
 	perror(error_buf);
-	exit(EXIT_FAILURE);
+	_exit(EXIT_FAILURE);
 }
