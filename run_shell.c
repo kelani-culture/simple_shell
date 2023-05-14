@@ -10,9 +10,10 @@
 
 /**
  * run_shell - run the shell command
+ * @program_name: name of the prog
  */
 
-void run_shell (const char *program_name)
+void run_shell(const char *program_name)
 {
 	char command[BUF_SIZE];
 	pid_t pid;

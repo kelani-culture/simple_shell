@@ -3,7 +3,7 @@
 /**
  * _strcmp - compare string together
  * @s1: string to compare
- * @s: string from
+ * @s2: string from
  * Return: comparison beteween string
  */
 
