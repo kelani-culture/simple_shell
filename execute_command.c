@@ -18,7 +18,6 @@ void execute_command(char *command)
 {
 	char *args[BUF_SIZE];
 	char full_path[BUF_SIZE];
-	char *error_msg;
 
 	command_args(command, args, BUF_SIZE);
 	if (find_command(args[0], full_path, BUF_SIZE))
@@ -30,8 +29,7 @@ void execute_command(char *command)
 		exit_shell();
 	else
 	{
-		error_msg = "simple_shell: command not found\n";
-		write_string(STDERR_FILENO, error_msg);
+		perror(command);
 		_exit(EXIT_FAILURE);
 	}
 }
