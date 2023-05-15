@@ -22,7 +22,7 @@ int find_command(char *command, char *fullPath, int buffer_size)
 	char *path, *path_copy, *dir;
 	int access_result;
 
-	path = getenv("PATH");
+	path = _getenv("PATH");
 	if (path == NULL)
 		return (0);
 
