@@ -14,6 +14,9 @@ int find_command(char *command, char *full_path, int buffer_size);
 char *_strncpy(char *dest, const char *src, size_t n);
 int command_args(char *command, char *args[], int max_args);
 size_t _strlen(const char *str);
+ssize_t _getline(char **line, size_t *n, FILE *stream);
 void write_string(int fd, const char *str);
 void handle_error(const char *error_msg, const char *program_name);
+char *custom_realloc(char *ptr, size_t size);
+void process_command(const char *program_name, char *command);
 #endif

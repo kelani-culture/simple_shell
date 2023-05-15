@@ -2,7 +2,7 @@
 #include "main.h"
 
 /**
- * getenv - Retrieves the value of an environment variable.
+ * _getenv - Retrieves the value of an environment variable.
  * @name: The name of the environment variable.
  *
  * Return: The value of the environment variable if found, or NULL otherwise.
@@ -26,7 +26,6 @@ char *_getenv(const char *name)
 				if (name[i] != env_var[i])
 					break;
 			}
-		
 			if (i == nameLen && env_var[i] == '=')
 			{
 				/* return the value after the '=' */

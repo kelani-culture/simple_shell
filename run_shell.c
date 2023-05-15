@@ -15,38 +15,26 @@
 
 void run_shell(const char *program_name)
 {
-	char command[BUF_SIZE];
-	pid_t pid;
+	char *command = NULL;
 	ssize_t read_size;
-	int status;
+	size_t command_size = BUF_SIZE;
 
 	while (1)
 	{
 		write_string(STDOUT_FILENO, "$ ");
-		read_size = read(STDIN_FILENO, command, BUF_SIZE);
+		read_size = _getline(&command, &command_size, stdin);
 		if (read_size == -1)
-			handle_error("ERROR reading input ", program_name);
-		else if (read_size == 0)
 		{
-			write_string(STDOUT_FILENO, "\n");
-			break;
+			if (feof(stdin))
+			{
+				write_string(STDOUT_FILENO, "\n");
+				exit_shell();
+			}
+			else
+				handle_error("Error reading input.", program_name);
 		}
 		command[read_size - 1] = '\0';
-		if (_strcmp(command, "exit") == 0)
-			exit_shell();
-		pid = fork();
-		if (pid == -1)
-			handle_error("Error forking ", program_name);
-		else if (pid == 0)
-		{
-			/* child process */
-			execute_command(command);
-		}
-		else
-		{
-			/* parent process */
-			if (wait(&status) == -1)
-				handle_error("Error waiting for child  process. ", program_name);
-		}
+		process_command(program_name, command);
 	}
+	free(command);/* free allocate memory from getline */
 }
