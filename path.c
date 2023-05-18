@@ -11,38 +11,40 @@
  * find_command - Finds the full path of the command
  *	* using the PATH environment variable.
  * @command: The command to find.
- * @fullPath: The buffer to store the full path.
- * @buffer_size: The size of the buffer.
+ * @full_path: The buffer to store the full path.
+ * @path_size: The size of the buffer.
  *
- * Return: 1 if the command is found, 0 otherwise.
+ * Return: 1 if the command is found otherwise  0
  */
 
-int find_command(char *command, char *fullPath, int buffer_size)
+int find_command(const char *command, char *full_path, size_t path_size)
 {
-	char *path, *path_copy, *dir;
-	int access_result;
+	char *path, *path_copy, *token;
 
-	path = _getenv("PATH");
+	path = getenv("PATH");
 	if (path == NULL)
-		return (0);
-
-	path_copy = malloc(BUF_SIZE);
+		return (-1);
+	path_copy = malloc(strlen(path) + 1);
 	if (path_copy == NULL)
-		handle_error("Memory allocation error", "find_command");
-	_strncpy(path_copy, path, BUF_SIZE);
+		return (-1);
 
-	dir = strtok(path_copy, ":");
-	while (dir != NULL)
+	_strncpy(path_copy, path, strlen(path) + 1);
+
+	token = _strtok(path_copy, ":");
+	while (token != NULL)
 	{
-		snprintf(fullPath, buffer_size, "%s/%s", dir, command);
-		access_result = access(fullPath, X_OK);
-		if (access_result != -1)
+		_strncpy(full_path, token, path_size - 1);
+		_strncat(full_path, "/", path_size - strlen(full_path) - 1);
+		_strncat(full_path, command, path_size - strlen(full_path) - 1);
+
+		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
 			return (1);
 		}
-		dir = strtok(NULL, ":");
+		token = _strtok(NULL, ":");
 	}
 	free(path_copy);
 	return (0);
 }
+

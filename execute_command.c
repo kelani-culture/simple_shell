@@ -25,8 +25,6 @@ void execute_command(char *command)
 		execve(full_path, args, environ);
 		handle_error("command execution failed.", "simple_shell");
 	}
-	else if (_strcmp(args[0], "exit") == 0)
-		exit_shell();
 	else
 	{
 		perror(command);

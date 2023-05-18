@@ -12,23 +12,39 @@
 
 void process_command(const char *program_name, char *command)
 {
-	pid_t pid = fork();
+	pid_t pid;
 	int status;
 
 	if (_strcmp(command, "exit") == 0)
-		exit_shell();
-
+		exit_shell(EXIT_SUCCESS);
+	else if (_strncmp(command, "exit ", 5) == 0)
+	{
+		status = exit_status(command + 5);
+		if (status != -1)
+			exit_shell(status);
+		else
+		{
+			write_string(STDERR_FILENO, "Invalid exit status: ");
+			write_string(STDERR_FILENO, command + 5);
+			write_string(STDERR_FILENO, "\n");
+		}
+	}
+	pid = fork();
 	if (pid == -1)
-		handle_error("Error forking.", program_name);
-
+	{
+		perror(program_name);
+	}
 	else if (pid == 0)
 	{
-		/* child process */
+		/* Child process */
 		execute_command(command);
 	}
 	else
 	{
-		if ((wait(&status) == -1))
-			handle_error("Error waiting for child process.", program_name);
+		/* Parent process */
+		if (wait(&status) == -1)
+		{
+			perror(program_name);
+		}
 	}
 }

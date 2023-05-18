@@ -16,25 +16,28 @@
 void run_shell(const char *program_name)
 {
 	char *command = NULL;
+	size_t bufsize = 0;
 	ssize_t read_size;
-	size_t command_size = BUF_SIZE;
 
 	while (1)
 	{
 		write_string(STDOUT_FILENO, "$ ");
-		read_size = _getline(&command, &command_size, stdin);
+		read_size = _getline(&command, &bufsize, stdin);
 		if (read_size == -1)
 		{
 			if (feof(stdin))
 			{
 				write_string(STDOUT_FILENO, "\n");
-				exit_shell();
+				break;
 			}
 			else
+			{
 				handle_error("Error reading input.", program_name);
+			}
 		}
+
 		command[read_size - 1] = '\0';
 		process_command(program_name, command);
 	}
-	free(command);/* free allocate memory from getline */
+	free(command);
 }

@@ -5,9 +5,10 @@
 
 /**
  * exit_shell - Exits the shell program.
+ * @status: integer
  */
 
-void exit_shell(void)
+void exit_shell(int status)
 {
-	_exit(EXIT_SUCCESS);
+	exit(status);
 }
