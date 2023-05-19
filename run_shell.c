@@ -25,15 +25,8 @@ void run_shell(const char *program_name)
 		read_size = _getline(&command, &bufsize, stdin);
 		if (read_size == -1)
 		{
-			if (feof(stdin))
-			{
-				write_string(STDOUT_FILENO, "\n");
-				break;
-			}
-			else
-			{
-				handle_error("Error reading input.", program_name);
-			}
+			write_string(STDOUT_FILENO, "\n");
+			break;
 		}
 
 		command[read_size - 1] = '\0';
