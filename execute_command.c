@@ -23,7 +23,7 @@ void execute_command(char *command)
 	if (find_command(args[0], full_path, BUF_SIZE))
 	{
 		execve(full_path, args, environ);
-		handle_error("command execution failed.");
+		handle_error("command execution failed");
 	}
 	else
 	{
@@ -42,7 +42,9 @@ int is_builtin_command(const char *command)
 	if (_strcmp(command, "exit") == 0 ||
 		_strncmp(command, "exit ", 5) == 0 ||
 		_strncmp(command, "setenv ", 7) == 0 ||
-		_strncmp(command, "unsetenv ", 9) == 0)
+		_strncmp(command, "unsetenv ", 9) == 0 ||
+		_strncmp(command, "cd", 2) == 0 ||
+		_strncmp(command, "cd ", 3) == 0)
 	{
 		return (1);
 	}

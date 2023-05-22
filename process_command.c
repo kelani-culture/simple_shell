@@ -78,6 +78,8 @@ void handle_builtin_command(const char *program_name, char *command)
 		char *variable = _strtok(command + 9, " ");
 		shell_unsetenv(variable);
 	}
+	else if (_strncmp(command, "cd ", 3) == 0 || _strncmp(command, "cd", 2) == 0)
+		shell_cd(program_name, command);
 	else
 		execute_external_command(program_name, command);
 }

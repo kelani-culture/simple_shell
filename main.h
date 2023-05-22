@@ -27,4 +27,5 @@ int _strncmp(const char *str1, const char *str2, size_t n);
 void shell_unsetenv(const char *variable);
 void shell_setenv(const char *variable, const char *value);
 int is_builtin_command(const char *command);
+void shell_cd(const char *program_name, char *command);
 #endif
