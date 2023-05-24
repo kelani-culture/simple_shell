@@ -13,7 +13,6 @@
  * @command: command
  */
 
-
 void execute_command(char *command)
 {
 	char *args[BUF_SIZE];
@@ -23,10 +22,13 @@ void execute_command(char *command)
 	if (find_command(args[0], full_path, BUF_SIZE))
 	{
 		execve(full_path, args, environ);
-		handle_error("command execution failed");
+		handle_error("Command execution failed.");
 	}
 	else
 	{
+		/* Try running command without /bin/ prefix */
+		execvp(args[0], args);
+		/* If execvp fails, print error */
 		perror(command);
 		_exit(EXIT_FAILURE);
 	}

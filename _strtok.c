@@ -15,33 +15,61 @@
  *
  * Return: A pointer to the next token, or NULL if no more tokens are found.
  */
-char *_strtok(char *str, const char *delim)
+unsigned int is_delim(char str, char *delim);
+
+char *_strtok(char *str, char *delim)
 {
-	static char *last_token = NULL;
-	int i, j;
+	static char *strBackup;
+	char *ret;
 
-	if (str == NULL)
-		str = last_token;
-	/* Skip leading delimiter characters */
-	for (i = 0; str[i] && _strchr(delim, str[i]); i++)
-		;
-	/* No more tokens */
-	if (!str[i])
+	if (!str)
+		str = strBackup;
+	if (!str)
 		return (NULL);
-	/* Find the end of the token */
-	for (j = i; str[j] && !_strchr(delim, str[j]); j++)
-		;
-	if (str[j])
+	while (1)
 	{
-		/* Null-terminate the token */
-		str[j] = '\0';
-		last_token = &str[j + 1];
+		if (is_delim(*str, delim))
+		{
+			str++;
+			continue;
+		}
+		if (*str == '\0')
+			return (NULL);
+		break;
 	}
-	else
+	ret = str;
+	while (1)
 	{
-		/* No more tokens after this one */
-		last_token = NULL;
+		if (*str == '\0')
+		{
+			strBackup = str;
+			return (ret);
+		}
+		if (is_delim(*str, delim))
+		{
+			*str = '\0';
+			strBackup = str + 1;
+			return (ret);
+		}
+		str++;
 	}
+}
 
-	return (&str[i]);
+/**
+ * is_delim - checks if the delimeter exists
+ * @str: string to check from
+ * @delim: the delimeter to use to split
+ * Return: 0 if the delim does not match
+ * 	* else 1 if it exists
+ */
+
+unsigned int is_delim(char str, char *delim)
+{
+	while (*delim != '\0')
+	{
+		if (str  == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
 }
