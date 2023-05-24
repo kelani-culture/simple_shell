@@ -60,7 +60,7 @@ char *_strtok(char *str, char *delim)
  * @str: string to check from
  * @delim: the delimeter to use to split
  * Return: 0 if the delim does not match
- * 	* else 1 if it exists
+ *	* else 1 if it exists
  */
 
 unsigned int is_delim(char str, char *delim)

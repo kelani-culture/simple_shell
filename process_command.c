@@ -42,6 +42,7 @@ void execute_external_command(const char *program_name, char *command)
 	{
 		/* Parent process */
 		int status;
+
 		if (wait(&status) == -1)
 		{
 			perror(program_name);
@@ -62,6 +63,7 @@ void handle_builtin_command(const char *program_name, char *command)
 	else if (_strncmp(command, "exit ", 5) == 0)
 	{
 		int status = exit_status(command + 5);
+
 		if (status != -1)
 			exit_shell(status);
 		else
@@ -71,11 +73,13 @@ void handle_builtin_command(const char *program_name, char *command)
 	{
 		char *variable = _strtok(command + 7, " ");
 		char *value = _strtok(NULL, " ");
+
 		shell_setenv(variable, value);
 	}
 	else if (_strncmp(command, "unsetenv ", 9) == 0)
 	{
 		char *variable = _strtok(command + 9, " ");
+
 		shell_unsetenv(variable);
 	}
 	else if (_strncmp(command, "cd ", 3) == 0 || _strncmp(command, "cd", 2) == 0)

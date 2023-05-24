@@ -15,6 +15,8 @@ void shell_unsetenv(const char *variable)
 		handle_error("Usage: unsetenv VARIABLE");
 		return;
 	}
-	if ((result = unsetenv(variable)) != 0)
+	result = unsetenv(variable)
+
+	if (result != 0)
 		handle_error("Failed to unset environment variable");
 }

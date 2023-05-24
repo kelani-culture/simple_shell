@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 /**
- * shell_setenv - Initialize a new environment variable or modify an existing one
+ * shell_setenv - Initialize a new environment
+ *	* variable or modify an existing one
  * @variable: Name of the environment variable
  * @value: Value to set for the environment variable
  */

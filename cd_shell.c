@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #define MAX_PATH_LENGTH PATH_MAX
 /**
- * cd_shell - change shell directory
+ * shell_cd - change shell directory
  * @program_name: name of the program
  * @command: command name
  */
@@ -44,7 +44,8 @@ void shell_cd(const char *program_name, char *command)
 		}
 		getcwd(previous_dir, sizeof(previous_dir));
 	}
-	if (setenv("OLDPWD", _getenv("PWD"), 1) != 0 || setenv("PWD", previous_dir, 1) != 0)
+	if (setenv("OLDPWD", _getenv("PWD"), 1) != 0 ||
+		setenv("PWD", previous_dir, 1) != 0)
 	{
 		handle_error("Failed to update environment variables");
 		return;
