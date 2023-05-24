@@ -10,7 +10,8 @@
 
 char *_getenv(const char *name)
 {
-	
+	size_t nameLen = _strlen(name), env_var_len, i;
+	char **env = environ, *env_var;
 
 	for (; *env != NULL; ++env)
 	{
