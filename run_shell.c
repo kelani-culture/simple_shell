@@ -29,8 +29,7 @@ void run_shell(const char *program_name)
 			break;
 		}
 
-		command[read_size - 1] = '\0';
-		process_command(program_name, command);
+		
 	}
 	free(command);
 	exit(0);

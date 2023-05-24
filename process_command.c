@@ -38,7 +38,7 @@ void execute_external_command(const char *program_name, char *command)
 		execute_command(command);
 		_exit(EXIT_FAILURE);
 	}
-	else
+		else
 	{
 		/* Parent process */
 		int status;
