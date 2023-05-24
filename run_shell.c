@@ -33,4 +33,5 @@ void run_shell(const char *program_name)
 		process_command(program_name, command);
 	}
 	free(command);
+	exit(0);
 }
