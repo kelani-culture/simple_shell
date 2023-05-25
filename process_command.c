@@ -76,34 +76,34 @@ void handle_builtin_command(const char *program_name, char *command, int interac
 {
 	if (_strcmp(command, "exit") == 0 || _strncmp(command,"exit ", 5) == 0)
 	{
+		int status = exit_status(command + 5);
 		if (interactive_mode && (_strncmp(command, "exit ", 5) != 0))
 			exit_shell(EXIT_SUCCESS);
 		else if (interactive_mode && (_strncmp(command,"exit ", 5) == 0))
 		{
-			/* Handle exit command in non-interactive mode */
-			int status = exit_status(command + 5);
-			if (status != -1)
-				exit_shell(status);
-			else
-				exit_shell(EXIT_FAILURE);
+			check_status(program_name, command, status);
 		}
+		check_status(program_name, command, status);
 	}
 	else if (_strncmp(command, "setenv ", 7) == 0)
 	{
 		char *variable = _strtok(command + 7, " ");
 		char *value = _strtok(NULL, " ");
 		shell_setenv(variable, value);
+		free(command);
 	}
 	else if (_strncmp(command, "unsetenv ", 9) == 0)
 	{
 		char *variable = _strtok(command + 9, " ");
 		shell_unsetenv(variable);
+		free(command);
 	}
 	else if (_strncmp(command, "cd ", 3) == 0 || _strncmp(command, "cd", 2) == 0)
 	{
 		shell_cd(program_name, command);
+		free(command);
 	}
 	else
 		execute_external_command(program_name, command, interactive_mode);
+	free(command);
 }
-
