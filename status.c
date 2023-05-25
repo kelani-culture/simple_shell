@@ -19,6 +19,6 @@ void check_status(const char *program_name, char *command, int status)
 	{
 		handle_exit_error(program_name, command + 5);
 		free(command);
-		exit_shell(EXIT_FAILURE);
+		exit_shell(2);
 	}
 }
