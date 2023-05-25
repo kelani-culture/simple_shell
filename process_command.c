@@ -100,5 +100,4 @@ void handle_builtin_command(const char *program_name, char *command, int interac
 		shell_cd(program_name, command);
 	else
 		execute_external_command(program_name, command, interactive_mode);
-	free(command);
 }
