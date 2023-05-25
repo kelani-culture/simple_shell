@@ -18,19 +18,22 @@ void run_shell(const char *program_name)
 	char *command = NULL;
 	size_t bufsize = 0;
 	ssize_t read_size;
+	int interactive_mode = isatty(STDIN_FILENO);
 
 	while (1)
 	{
-		write_string(STDOUT_FILENO, "$ ");
+		if (interactive_mode)
+		{
+			write_string(STDOUT_FILENO, "$ ");
+		}
+
 		read_size = _getline(&command, &bufsize, stdin);
 		if (read_size == -1)
 		{
-			write_string(STDOUT_FILENO, "\n");
 			break;
 		}
 		command[read_size - 1] = '\0';
-		process_command(program_name, command);
+		process_command(program_name, command, interactive_mode);
 	}
 	free(command);
-	exit(0);
 }

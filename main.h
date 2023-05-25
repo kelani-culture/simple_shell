@@ -18,7 +18,7 @@ ssize_t _getline(char **line, size_t *n, FILE *stream);
 void write_string(int fd, const char *str);
 void handle_error(const char *error_msg);
 char *custom_realloc(char *ptr, size_t size);
-void process_command(const char *program_name, char *command);
+void process_command(const char *program_name, char *command, int interactive_mode);
 int exit_status(const char *status_str);
 char *_strtok(char *str, char *delim);
 char *_strncat(char *dest, const char *src, size_t n);
