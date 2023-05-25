@@ -30,4 +30,5 @@ int is_builtin_command(const char *command);
 void shell_cd(const char *program_name, char *command);
 void handle_exit_error(const char *program_name, char *status);
 void check_status(const char *program_name, char *command, int status);
+void handle_semicolon_commands(const char *program_name, char *commands, int interactive_mode);
 #endif

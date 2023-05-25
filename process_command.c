@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/wait.h>
 #include "main.h"
 
@@ -13,6 +14,7 @@
 
 void execute_external_command(const char *program_name, char *command, int interactive_mode);
 void handle_builtin_command(const char *program_name, char *command, int interactive_mode);
+void handle_semicolon_commands(const char *program_name, char *commands, int interactive_mode);
 
 void process_command(const char *program_name, char *command, int interactive_mode)
 {
@@ -100,4 +102,26 @@ void handle_builtin_command(const char *program_name, char *command, int interac
 		shell_cd(program_name, command);
 	else
 		execute_external_command(program_name, command, interactive_mode);
+}
+
+/*
+ * handle_semicolon - for handling the semicolons command separator
+ * @program_name: name of program
+ * @command: command
+ * @interactive_mode: mode of the shell
+ */
+
+void handle_semicolon_commands(const char *program_name, char *commands, int interactive_mode)
+{
+	const char *separator = ";";
+	char *token;
+	char *saveptr;
+
+	token = strtok_r(commands, separator, &saveptr);
+	while (token != NULL)
+	{
+		if (_strlen(token) > 0)
+			process_command(program_name, token, interactive_mode);
+		token = strtok_r(NULL, separator, &saveptr);
+	}
 }
