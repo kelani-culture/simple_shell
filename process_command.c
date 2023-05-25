@@ -90,19 +90,14 @@ void handle_builtin_command(const char *program_name, char *command, int interac
 		char *variable = _strtok(command + 7, " ");
 		char *value = _strtok(NULL, " ");
 		shell_setenv(variable, value);
-		free(command);
 	}
 	else if (_strncmp(command, "unsetenv ", 9) == 0)
 	{
 		char *variable = _strtok(command + 9, " ");
 		shell_unsetenv(variable);
-		free(command);
 	}
 	else if (_strncmp(command, "cd ", 3) == 0 || _strncmp(command, "cd", 2) == 0)
-	{
 		shell_cd(program_name, command);
-		free(command);
-	}
 	else
 		execute_external_command(program_name, command, interactive_mode);
 	free(command);
