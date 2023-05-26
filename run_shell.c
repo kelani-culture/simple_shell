@@ -30,7 +30,6 @@ void run_shell(const char *program_name)
 		read_size = _getline(&command, &bufsize, stdin);
 		if (read_size == -1)
 		{
-			write_string(STDOUT_FILENO, "\n");
 			break;
 		}
 		command[read_size - 1] = '\0';

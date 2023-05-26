@@ -12,13 +12,8 @@
  * @interactive_mode: interactive mode of the shell
  */
 
-void execute_external_command(const char *program_name, char *command, int interactive_mode);
-void handle_builtin_command(const char *program_name, char *command, int interactive_mode);
-void handle_semicolon_commands(const char *program_name, char *commands, int interactive_mode);
-void handle_logical_operator(const char *program_name, char *command, int interactive_mode);
-int get_last_command_status(const char *program_name, char *command, int interactive_mode);
-
 int last_command_status = 0;
+
 void process_command(const char *program_name, char *command, int interactive_mode)
 {
 	if (is_builtin_command(command))
