@@ -15,7 +15,10 @@
 void execute_external_command(const char *program_name, char *command, int interactive_mode);
 void handle_builtin_command(const char *program_name, char *command, int interactive_mode);
 void handle_semicolon_commands(const char *program_name, char *commands, int interactive_mode);
+void handle_logical_operator(const char *program_name, char *command, int interactive_mode);
+int get_last_command_status(const char *program_name, char *command, int interactive_mode);
 
+int last_command_status = 0;
 void process_command(const char *program_name, char *command, int interactive_mode)
 {
 	if (is_builtin_command(command))
@@ -26,6 +29,15 @@ void process_command(const char *program_name, char *command, int interactive_mo
 	{
 		execute_external_command(program_name, command, interactive_mode);
 	}
+}
+
+int get_last_command_status(const char *program_name, char *command, int interactive_mode)
+{
+	UNUSED(program_name);
+	UNUSED(command);
+	UNUSED(interactive_mode);
+
+	return (last_command_status);
 }
 /**
  * execute_external_command - Executes an external command in a child process
@@ -40,12 +52,13 @@ void execute_external_command(const char *program_name, char *command, int inter
 
 	if (pid == -1)
 		handle_error("Error forking.");
+
 	else if (pid == 0)
 	{
 		/* Child process */
 		if (!interactive_mode)
 		{
-		 /* Redirect stdin from /dev/null in non-interactive mode */
+			/* Redirect stdin from /dev/null in non-interactive mode */
 			int dev_null = open("/dev/null", O_RDONLY);
 			if (dev_null == -1)
 			{
@@ -64,6 +77,13 @@ void execute_external_command(const char *program_name, char *command, int inter
 		int status;
 		if (wait(&status) == -1)
 			perror(program_name);
+		else
+		{
+			if (WIFEXITED(status))
+					last_command_status = WEXITSTATUS(status);
+				else
+					last_command_status = -1;
+		}
 	}
 }
 
@@ -104,6 +124,42 @@ void handle_builtin_command(const char *program_name, char *command, int interac
 		execute_external_command(program_name, command, interactive_mode);
 }
 
+/**
+ * handle_logical_operator - handle both shell logical operator && ||
+ * @program_name: program_name
+ * @command: command
+ * @interactive_mode: shell mode
+ */
+
+void handle_logical_operator(const char *program_name, char *command, int interactive_mode)
+{
+	char *operator = strstr(command, "&&");
+
+	if (operator != NULL)
+	{
+		*operator = '\0';
+		operator += 2;  /* Move past the '&&' operator */
+		process_command(program_name, command, interactive_mode);
+		if (get_last_command_status(program_name, command, interactive_mode) == 0)
+			handle_logical_operator(program_name, operator, interactive_mode);
+	}
+	else
+	{
+		operator = strstr(command, "||");
+		if (operator != NULL)
+	{
+			*operator = '\0';
+			operator += 2;  /* Move past the '||' operator */
+			process_command(program_name, command, interactive_mode);
+			if (get_last_command_status(program_name, command, interactive_mode) != 0)
+				handle_logical_operator(program_name, operator, interactive_mode);
+		}
+	else
+			process_command(program_name, command, interactive_mode);
+	}
+}
+
+
 /*
  * handle_semicolon - for handling the semicolons command separator
  * @program_name: name of program
@@ -120,8 +176,8 @@ void handle_semicolon_commands(const char *program_name, char *commands, int int
 	token = strtok_r(commands, separator, &saveptr);
 	while (token != NULL)
 	{
-		if (_strlen(token) > 0)
-			process_command(program_name, token, interactive_mode);
+		if (strlen(token) > 0)
+			handle_logical_operator(program_name, token, interactive_mode);
 		token = strtok_r(NULL, separator, &saveptr);
 	}
 }
